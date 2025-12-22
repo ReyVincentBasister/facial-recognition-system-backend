@@ -109,6 +109,9 @@ class AttendanceController {
     public List<AttendanceLog> getAll() {
         return service.getAllLogs();
     }
-
+    @PostMapping
+    public ResponseEntity<AttendanceLog> create(@RequestBody AttendanceDTO data) {
+        return ResponseEntity.ok(service.saveAttendanceLog(data));
+    }
 
 }
