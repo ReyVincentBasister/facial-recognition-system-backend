@@ -47,3 +47,52 @@ interface AttendanceRepository extends JpaRepository<AttendanceLog, String> {
     List<AttendanceLog> findByStudentId(String studentId);
     List<AttendanceLog> findByTimestampBetween(LocalDateTime start, LocalDateTime end);
 }
+
+// ===========================
+// 📌 SERVICE
+// ===========================
+@Service
+@RequiredArgsConstructor
+class AttendanceService {
+    private final AttendanceRepository repository;
+
+    public List<AttendanceLog> getAllLogs() {
+        return repository.findAll();
+    }
+
+    public AttendanceLog saveAttendanceLog(AttendanceDTO data) {
+        // Prevent duplicate attendance for the same event
+        Optional<AttendanceLog> existing = repository.findByStudentIdAndEventId(data.getStudentId(), data.getEventId());
+        
+        if (existing.isPresent()) {
+            return existing.get();
+        }
+
+        AttendanceLog newLog = AttendanceLog.builder()
+                .id(UUID.randomUUID().toString())
+                .studentId(data.getStudentId())
+                .eventId(data.getEventId())
+                .confidence(String.valueOf(data.getConfidence()))
+                .status(data.getStatus())
+                .timestamp(LocalDateTime.now())
+                .build();
+
+        return repository.save(newLog);
+    }
+
+    public List<AttendanceLog> getAttendanceByEvent(String eventId) {
+        return repository.findByEventId(eventId);
+    }
+
+    public AttendanceLog getAttendanceLogById(String id) {
+        return repository.findById(id).orElse(null);
+    }
+    
+    public List<AttendanceLog> getAttendanceByStudent(String studentId) {
+        return repository.findByStudentId(studentId);
+    }
+
+    public List<AttendanceLog> getAttendanceByDateRange(LocalDateTime start, LocalDateTime end) {
+        return repository.findByTimestampBetween(start, end);
+    }
+}
