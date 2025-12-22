@@ -119,4 +119,10 @@ class AttendanceController {
         AttendanceLog log = service.getAttendanceLogById(id);
         return log != null ? ResponseEntity.ok(log) : ResponseEntity.notFound().build();
     }
+
+        @GetMapping("/event/{eventId}")
+    public List<AttendanceLog> getByEvent(@PathVariable String eventId) {
+        return service.getAttendanceByEvent(eventId);
+    }
+
 }
