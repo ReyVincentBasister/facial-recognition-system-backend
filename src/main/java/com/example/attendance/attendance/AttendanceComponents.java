@@ -96,3 +96,19 @@ class AttendanceService {
         return repository.findByTimestampBetween(start, end);
     }
 }
+// ===========================
+// 📌 CONTROLLER
+// ===========================
+@RestController
+@RequestMapping("/api/attendance")
+@RequiredArgsConstructor
+class AttendanceController {
+    private final AttendanceService service;
+
+    @GetMapping
+    public List<AttendanceLog> getAll() {
+        return service.getAllLogs();
+    }
+
+
+}
