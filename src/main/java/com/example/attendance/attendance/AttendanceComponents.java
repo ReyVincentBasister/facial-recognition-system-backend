@@ -33,3 +33,11 @@ class AttendanceLog {
     @Builder.Default
     private LocalDateTime timestamp = LocalDateTime.now();
 }
+
+@Data
+class AttendanceDTO {
+    private String studentId;
+    private String eventId;
+    private Double confidence;
+    private String status;
+}
