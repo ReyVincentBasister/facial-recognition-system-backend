@@ -114,4 +114,9 @@ class AttendanceController {
         return ResponseEntity.ok(service.saveAttendanceLog(data));
     }
 
+ @GetMapping("/{id}")
+    public ResponseEntity<AttendanceLog> getById(@PathVariable String id) {
+        AttendanceLog log = service.getAttendanceLogById(id);
+        return log != null ? ResponseEntity.ok(log) : ResponseEntity.notFound().build();
+    }
 }
