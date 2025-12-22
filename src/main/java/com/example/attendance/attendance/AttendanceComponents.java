@@ -45,5 +45,5 @@ interface AttendanceRepository extends JpaRepository<AttendanceLog, String> {
     Optional<AttendanceLog> findByStudentIdAndEventId(String studentId, String eventId);
     List<AttendanceLog> findByEventId(String eventId);
     List<AttendanceLog> findByStudentId(String studentId);
-    List<AttendanceLog> findByTimestampBetween(LocalDateTime start, LocalDateTime end);
+    List<AttendanceLog> findByTimestampBetween(LocalDateTime start, LocalDateTime );
 }
