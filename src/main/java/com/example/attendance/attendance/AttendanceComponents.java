@@ -29,7 +29,7 @@ class AttendanceLog {
     private String eventId;
     private String confidence; // Stored as String to match schema, parsed later
     private String status; // "present" | "late" | "absent"
-    
+
     @Builder.Default
     private LocalDateTime timestamp = LocalDateTime.now();
 }
@@ -41,10 +41,14 @@ class AttendanceDTO {
     private Double confidence;
     private String status;
 }
+
 interface AttendanceRepository extends JpaRepository<AttendanceLog, String> {
     Optional<AttendanceLog> findByStudentIdAndEventId(String studentId, String eventId);
+
     List<AttendanceLog> findByEventId(String eventId);
+
     List<AttendanceLog> findByStudentId(String studentId);
+
     List<AttendanceLog> findByTimestampBetween(LocalDateTime start, LocalDateTime end);
 }
 
@@ -63,7 +67,7 @@ class AttendanceService {
     public AttendanceLog saveAttendanceLog(AttendanceDTO data) {
         // Prevent duplicate attendance for the same event
         Optional<AttendanceLog> existing = repository.findByStudentIdAndEventId(data.getStudentId(), data.getEventId());
-        
+
         if (existing.isPresent()) {
             return existing.get();
         }
@@ -87,7 +91,7 @@ class AttendanceService {
     public AttendanceLog getAttendanceLogById(String id) {
         return repository.findById(id).orElse(null);
     }
-    
+
     public List<AttendanceLog> getAttendanceByStudent(String studentId) {
         return repository.findByStudentId(studentId);
     }
@@ -96,6 +100,7 @@ class AttendanceService {
         return repository.findByTimestampBetween(start, end);
     }
 }
+
 // ===========================
 // 📌 CONTROLLER
 // ===========================
@@ -109,20 +114,26 @@ class AttendanceController {
     public List<AttendanceLog> getAll() {
         return service.getAllLogs();
     }
+
     @PostMapping
     public ResponseEntity<AttendanceLog> create(@RequestBody AttendanceDTO data) {
         return ResponseEntity.ok(service.saveAttendanceLog(data));
     }
 
- @GetMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<AttendanceLog> getById(@PathVariable String id) {
         AttendanceLog log = service.getAttendanceLogById(id);
         return log != null ? ResponseEntity.ok(log) : ResponseEntity.notFound().build();
     }
 
-        @GetMapping("/event/{eventId}")
+    @GetMapping("/event/{eventId}")
     public List<AttendanceLog> getByEvent(@PathVariable String eventId) {
         return service.getAttendanceByEvent(eventId);
+    }
+
+    @GetMapping("/student/{studentId}")
+    public List<AttendanceLog> getByStudent(@PathVariable String studentId) {
+        return service.getAttendanceByStudent(studentId);
     }
 
 }
