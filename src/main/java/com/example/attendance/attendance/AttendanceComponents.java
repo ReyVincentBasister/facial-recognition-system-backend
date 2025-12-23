@@ -138,8 +138,9 @@ class AttendanceController {
 
     @GetMapping("/range")
     public List<AttendanceLog> getByDateRange(
-        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
-        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime 
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime 
+        return service.getAttendanceByDateRange(start, end);
         
     )
 
