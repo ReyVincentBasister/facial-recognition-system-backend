@@ -135,5 +135,6 @@ class AttendanceController {
     public List<AttendanceLog> getByStudent(@PathVariable String studentId) {
         return service.getAttendanceByStudent(studentId);
     }
+    @GetMapping("/range")
 
 }
