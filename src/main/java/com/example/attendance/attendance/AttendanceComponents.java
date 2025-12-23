@@ -135,6 +135,10 @@ class AttendanceController {
     public List<AttendanceLog> getByStudent(@PathVariable String studentId) {
         return service.getAttendanceByStudent(studentId);
     }
+
     @GetMapping("/range")
+    public List<AttendanceLog> getByDateRange(
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+    )
 
 }
